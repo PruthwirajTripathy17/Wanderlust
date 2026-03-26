@@ -4,40 +4,46 @@
     <div class="col-8 offset-2">
       <br /><br />
       <h3>Create New Listing</h3>
-      <form
+<form
         method="POST"
         action="/listings"
+        class="premium-form needs-validation"
         novalidate
-        class="needs-validation"
+        enctype="multipart/form-data"
       >
-        <div class="mb-3">
-          <label for="title" class="form-label">Title</label>
+        <div class="form-floating mb-3">
           <input
             name="listing[title]"
-            placeholder="Add a catchy title "
+            id="title"
+            placeholder="Title"
             type="text"
             class="form-control"
             required
           />
+          <label for="title">Title</label>
           <div class="valid-feedback">Title looks good!</div>
         </div>
 
-        <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
+        <div class="form-floating mb-3">
           <textarea
             name="listing[description]"
+            id="description"
             class="form-control"
+            style="height: 100px"
+            placeholder="Description"
             required
           ></textarea>
+          <label for="description">Description</label>
             <div class="invalid-feedback">Please enter a short description</div>
         </div>
+      
         <div class="mb-3">
-          <label for="image" class="form-label">Image Link</label>
+          <label for="image" class="form-label">Upload Listing Image</label>
           <input
-            name="listing[image][url]"
-            placeholder="Enter Image URL/Link"
-            type="text"
+            name="listing[image]"
+            type="file"
             class="form-control"
+            required
           />
         </div>
         <div class="row">
@@ -75,7 +81,7 @@
           /><div class="invalid-feedback">Location should be valid</div>
           <br /><br />
         </div>
-        <button class="btn btn-dark add-btn mt-3">Add</button>
+        <button type="submit" class="btn btn-premium mt-3">Create Wanderlust Listing</button>
         <br /><br />
       </form>
     </div>

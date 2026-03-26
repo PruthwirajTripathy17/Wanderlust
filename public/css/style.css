@@ -48,33 +48,144 @@ body {
     justify-content: center;
     align-items: space-evenly;
 }
- /* Cards */
- .card{
-    border:none !important;
-    margin-bottom: 2rem;;
- }
- .card-img-top{
-    border-radius: 1rem !important;
-    width: 100% !important;
-    object-fit: cover !important;
- }
- .card-body{
-    padding: 0 !important;
- }
- .card-text p{
-    font-weight: 400 !important;
- }
- .listing-link{
-    text-decoration: none;
- }
- /* Card Effect */
- .card-img-overlay{
-    opacity: 0;
- }
- .card-img-overlay:hover{
-    opacity: 0.2;
-    background-color: white;
- }
+ /* Cards - Airbnb Style */
+.listing-card {
+  border: none !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+.listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.card-img-top {
+  width: 100% !important;
+  height: 20rem;
+  object-fit: cover !important;
+}
+.like-btn {
+  z-index: 20;
+  transition: all 0.2s ease;
+  width: 44px;
+  height: 44px;
+  top: 12px !important;
+  right: 12px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+}
+.like-btn:hover {
+  transform: scale(1.1);
+  background-color: #fff !important;
+}
+.like-btn.liked i {
+  color: #ff385c !important;
+  font-weight: 900;
+}
+.card-body {
+  padding: 1rem 1rem 1.5rem !important;
+}
+.card-text {
+  margin: 0;
+}
+.price {
+  color: #ff385c !important;
+}
+.listing-link {
+  text-decoration: none !important;
+  color: inherit;
+}
+.listing-link:hover .listing-card {
+  transform: none;
+}
+.card-img-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.listing-card:hover .card-img-overlay {
+  opacity: 0.1;
+  background-color: rgba(0,0,0,0.3);
+}
+
+/* Filter Improvements */
+.filter {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 12px;
+}
+.filter:hover {
+  transform: scale(1.05);
+  background-color: #f8f9fa;
+}
+
+/* Navbar Polish */
+.navbar-brand i {
+  color: #ff385c !important;
+}
+.search-btn {
+  background-color: #ff385c !important;
+  border-color: #ff385c !important;
+}
+.search-btn:hover {
+  background-color: #e6194b !important;
+  border-color: #e6194b !important;
+}
+
+/* Airbnb Premium Forms - Gorgeous */
+.premium-form {
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.premium-form .form-floating {
+  margin-bottom: 1.75rem;
+}
+.premium-form .form-floating > .form-control {
+  border-radius: 12px;
+  border: 2px solid #f1f3f4;
+  padding: 1rem 1rem 0.5rem 1rem;
+  background: #fafbfc;
+  transition: all 0.3s ease;
+  height: 56px;
+}
+.premium-form .form-floating > .form-control:focus {
+  border-color: #ff385c !important;
+  box-shadow: 0 0 0 4px rgba(255,56,92,0.1), 0 4px 12px rgba(255,56,92,0.15) !important;
+  background: white;
+  transform: translateY(-1px);
+}
+.premium-form .form-floating > label {
+  padding: 1rem 1rem 0.5rem;
+  color: #484848;
+  font-weight: 500;
+  transform-origin: 0 0;
+}
+.premium-form textarea.form-control {
+  height: 120px !important;
+  padding-top: 1rem !important;
+}
+.btn-premium {
+  background: linear-gradient(135deg, #ff385c 0%, #e6194b 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-weight: 600;
+  color: white;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+.btn-premium:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255,56,92,0.4);
+  color: white !important;
+}
  /* New Page */
  .add-btn{
     background-color: #fe424d ! important;
@@ -85,7 +196,7 @@ body {
     background-color: #fe424d ! important;
     border: none !important;
  }
-/* Show Page */
+ /* Show Page */
 .show-img{
    height:30vh;
 }
@@ -97,3 +208,32 @@ body {
    padding-left:0;
    padding-right:0;
 }
+
+/* Profile Dropdown */
+.navbar-nav .dropdown-menu {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  border: none;
+  padding: 0.5rem 0;
+}
+
+.navbar-nav .dropdown-item {
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.navbar-nav .dropdown-item:hover {
+  background: linear-gradient(135deg, #ff385c, #e6194b);
+  color: white !important;
+}
+
+.navbar-nav .dropdown-toggle {
+  color: #222 !important;
+  font-weight: 500;
+}
+
+.navbar-nav .dropdown-toggle:hover {
+  color: #ff385c !important;
+}
+

@@ -1,28 +1,247 @@
 <% layout("/layouts/boilerplate.ejs")%>
 <body>
-    <h3>All Listings</h3>
-    <!-- <form method="GET" action="/listings/new">
-        <button>Create New Listing</button>
-    </form> -->
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-        <% for(let listing of allListings){ %>
-            <a href="/listings/<%=listing._id%>" class="listing-link">
-    <div class="card col">
-  <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image"style="height: 20rem;">
-  <div class="card-img-overlay"></div>
-  <div class="card-body">
-    <p class="card-text"><b><%= listing.title %></b> <br>
-    &#8377;<%= listing.price.toLocaleString("en-IN") %> /night
-    </p>
+
+<style>
+/* FILTER BAR */
+#filters {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+  padding: 1rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #filters {
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+  .filters-left {
+    flex: 1;
+  }
+  
+  .tax-toggle {
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-width: 200px;
+  }
+}
+
+/* LEFT FILTERS */
+.filters-left {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+}
+
+.filter {
+  text-align: center;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.filter:hover {
+  opacity: 1;
+}
+
+.filter p {
+  font-size: 0.8rem;
+}
+
+/* TAX TOGGLE */
+.tax-toggle {
+  flex-shrink: 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.tax-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #000;
+  border-radius: 30px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  background: white;
+}
+
+.tax-label input {
+  display: none;
+}
+
+.slider {
+  width: 40px;
+  height: 20px;
+  background: #ddd;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.slider::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: white;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.tax-label input:checked + .slider {
+  background: #ff385c;
+}
+
+.tax-label input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+/* CARD */
+.listing-card {
+  border: none !important;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.listing-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  height: 250px;
+  object-fit: cover;
+}
+
+/* LIKE BUTTON */
+.like-btn {
+  width: 40px;
+  height: 40px;
+}
+
+.like-btn.liked i {
+  color: #ff385c !important;
+}
+
+/* TAX INFO */
+.tax-info {
+  display: none;
+}
+
+/* CONTAINER WIDTH (BREATHING SPACE) */
+.container {
+  max-width: 1200px;
+}
+</style>
+
+<!-- FILTERS -->
+<div class="container mt-3">
+    <div class="container-fluid px-4">
+      <div id="filters">
+
+    <div class="filters-left">
+      <div class="filter" data-filter="trending"><i class="fa-solid fa-fire"></i><p>Trending</p></div>
+      <div class="filter" data-filter="rooms"><i class="fa-solid fa-bed"></i><p>Rooms</p></div>
+      <div class="filter" data-filter="iconic cities"><i class="fa-solid fa-mountain-city"></i><p>Iconic Cities</p></div>
+      <div class="filter" data-filter="mountains"><i class="fa-solid fa-mountain"></i><p>Mountains</p></div>
+      <div class="filter" data-filter="castles"><i class="fa-solid fa-dungeon"></i><p>Castles</p></div>
+      <div class="filter" data-filter="amazing pools"><i class="fa-solid fa-person-swimming"></i><p>Amazing Pools</p></div>
+      <div class="filter" data-filter="camping"><i class="fa-solid fa-campground"></i><p>Camping</p></div>
+      <div class="filter" data-filter="farms"><i class="fa-solid fa-cow"></i><p>Farms</p></div>
+      <div class="filter" data-filter="arctic"><i class="fa-solid fa-snowflake"></i><p>Arctic</p></div>
+      <div class="filter" data-filter="domes"><i class="fa-solid fa-igloo"></i><p>Domes</p></div>
+      <div class="filter" data-filter="boats"><i class="fa-solid fa-ship"></i><p>Boats</p></div>
+    </div>
+
+    <!-- TAX TOGGLE -->
+    <div class="tax-toggle">
+      <label class="tax-label">
+        <span>Display total after taxes</span>
+        <input type="checkbox" id="switchCheckDefault">
+        <span class="slider"></span>
+      </label>
+    </div>
+
   </div>
 </div>
-<% } %>
-</a>
-    <!-- </div>
-    
-    <ul>
-        <% for(let listing of allListings){ %>
-            <li><a href="/listings/<%= listing._id %>"> <%= listing.title %> </a></li>
-        <% } %>
-    </ul>
-</body> -->
+
+<!-- LISTINGS -->
+<div class="container mt-4">
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+
+    <% for(let listing of allListings){ %>
+
+      <div class="col">
+        <a href="/listings/<%=listing._id%>" class="listing-link">
+
+          <div class="card listing-card">
+
+            <div class="position-relative">
+              <img src="<%= listing.image.url %>" class="card-img-top">
+
+              <!-- LIKE BUTTON -->
+              <button class="like-btn position-absolute top-0 end-0 m-2 bg-white rounded-circle shadow border-0">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+
+            <div class="card-body">
+              <p class="card-text">
+                <b><%= listing.title %></b><br>
+                <span style="color:#ff385c; font-weight:bold;">
+                  ₹<%= listing.price.toLocaleString("en-IN") %>
+                </span> /night
+                <i class="tax-info"> +18% GST</i>
+              </p>
+            </div>
+
+          </div>
+
+        </a>
+      </div>
+
+    <% } %>
+
+  </div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+/* TAX TOGGLE */
+document.getElementById("switchCheckDefault").addEventListener("click", () => {
+  document.querySelectorAll(".tax-info").forEach(info => {
+    info.style.display = info.style.display === "inline" ? "none" : "inline";
+  });
+});
+
+/* LIKE BUTTON */
+document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const icon = this.querySelector('i');
+
+    this.classList.toggle('liked');
+
+    if (this.classList.contains('liked')) {
+      icon.classList.remove('far');
+      icon.classList.add('fas');
+      icon.style.color = "#ff385c";
+    } else {
+      icon.classList.remove('fas');
+      icon.classList.add('far');
+      icon.style.color = "";
+    }
+  });
+});
+</script>
+
+</body>

@@ -22,6 +22,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
+const sessionSecret = process.env.SECRET || "dev-session-secret";
 
 
 const dbUrl=process.env.ATLASDB_URL;
@@ -34,6 +35,7 @@ main()
 async function main() {
   await mongoose.connect(dbUrl);
 }
+app.set("trust proxy", 1); // for deployment
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.urlencoded({ extended: true }));
@@ -43,21 +45,19 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
   mongoUrl: dbUrl,
-  crypto:{
-    srcret:process.env.SECRET,
-  },
+  collectionName: "sessions_v2",
   touchAfter:24*3600,
 });
 
-store.on("error",()=>{
+store.on("error",(err)=>{
   console.log("ERROR IN MONGO SESSION STORE",err);
 });
 
 const sessionOptions = {
   store,
-  secret: process.env.SECRET, 
+  secret: sessionSecret, 
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000, 
     maxAge: 7 * 24 * 60 * 60 * 1000, 
@@ -104,6 +104,9 @@ app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
 app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
   let { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode).render("error.ejs", { message });
   // res.status(statusCode).send(message);
@@ -113,5 +116,5 @@ app.use((err, req, res, next) => {
 
 // });
 app.listen(port, () => {
-  console.log(`Server is listening to port ${port}`);
+  console.log(`http://localhost:${port}/listings`);
 });

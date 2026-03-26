@@ -15,14 +15,25 @@
 
   // Wanderlust Enhancements
   document.addEventListener('DOMContentLoaded', () => {
+    // Toggle tax text only on listings page
+    const taxToggle = document.getElementById('switchCheckDefault');
+    if (taxToggle) {
+      taxToggle.addEventListener('click', () => {
+        document.querySelectorAll('.tax-info').forEach((info) => {
+          info.style.display = info.style.display === 'inline' ? 'none' : 'inline';
+        });
+      });
+    }
+
     // Restore like states from localStorage
     const likedListings = JSON.parse(localStorage.getItem('likedListings') || '[]');
     document.querySelectorAll('.like-btn').forEach(btn => {
       const id = btn.dataset.id;
-      if (likedListings.includes(id)) {
+      const heart = btn.querySelector('i');
+      if (id && heart && likedListings.includes(id)) {
         btn.classList.add('liked');
-        btn.querySelector('i').classList.replace('far', 'fas');
-        btn.querySelector('i').style.color = '#ff385c';
+        heart.classList.replace('far', 'fas');
+        heart.style.color = '#ff385c';
       }
     });
 
@@ -47,6 +58,7 @@
         const btn = e.target.closest('.like-btn');
         const id = btn.dataset.id;
         const heart = btn.querySelector('i');
+        if (!id || !heart) return;
         
         // Toggle state
         if (btn.classList.contains('liked')) {

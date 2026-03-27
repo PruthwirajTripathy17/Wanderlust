@@ -6,33 +6,53 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   padding: 1rem 0;
 }
 
-/* Responsive */
+/* Responsive - Enhanced */
 @media (max-width: 768px) {
   #filters {
     flex-direction: row;
+    align-items: flex-start;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .filters-left {
-    flex: 1;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.75rem;
   }
   
   .tax-toggle {
     flex-shrink: 0;
-    white-space: nowrap;
-    min-width: 200px;
+    justify-content: flex-end;
+  }
+  
+  .tax-label {
+    width: auto;
+    min-width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filters-left {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  
+  .filter {
+    min-width: 90px;
   }
 }
 
 /* LEFT FILTERS */
 .filters-left {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 1.5rem;
 }
 
@@ -115,14 +135,15 @@
 }
 
 .card-img-top {
-  height: 250px;
+  width: 100%;
+  height: clamp(12rem, 25vw, 20rem);
   object-fit: cover;
 }
 
 /* LIKE BUTTON */
 .like-btn {
-  width: 40px;
-  height: 40px;
+  width: clamp(2.5rem, 8vw, 3.5rem);
+  height: clamp(2.5rem, 8vw, 3.5rem);
 }
 
 .like-btn.liked i {
@@ -135,15 +156,16 @@
 }
 
 /* CONTAINER WIDTH (BREATHING SPACE) */
-.container {
+#listings-page .container {
   max-width: 1200px;
 }
 </style>
 
 <!-- FILTERS -->
-<div class="container mt-3">
-    <div class="container-fluid px-4">
-      <div id="filters">
+<div id="listings-page">
+  <div class="container mt-3">
+      <div class="container-fluid px-4">
+        <div id="filters">
 
     <div class="filters-left">
       <div class="filter" data-filter="trending"><i class="fa-solid fa-fire"></i><p>Trending</p></div>
@@ -170,10 +192,10 @@
 
   </div>
 </div>
-
-<!-- LISTINGS -->
-<div class="container mt-4">
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+</div>
+  <!-- LISTINGS -->
+  <div class="container mt-4">
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
 
     <% for(let listing of allListings){ %>
 
@@ -208,5 +230,6 @@
 
     <% } %>
 
+    </div>
   </div>
 </div>
